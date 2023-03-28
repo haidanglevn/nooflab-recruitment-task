@@ -53,6 +53,10 @@ Company.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    postalCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
   {
     sequelize,
@@ -179,6 +183,16 @@ app.get("/getAll", async (req, res) => {
   }
 });
 
+app.get("/postal_codes/:code/companies", async(req,res)=> {
+  console.log(req.params.code);
+  const result = await Company.findAll({
+    where: {
+      postalCode: req.params.code
+    }
+  })
+  res.send(result)
+});
+
 app.get("/fetchCompanies", async (req, res) => {
   const capitalRegionPostalCode = [
     "02100",
@@ -204,15 +218,18 @@ app.get("/fetchCompanies", async (req, res) => {
         console.log("---------------------------------");
         return results;
       })
-    await addCompanies(companyData)
+    await addCompanies(companyData, code)
   }
   res.end();
 });
 
 // function to add companies
-const addCompanies = async (companies) => {
+const addCompanies = async (companies, code) => {
   console.log("Companies :", companies)
-  await Company.bulkCreate(companies, {
+  const companiesWithPostalCode = companies.map((company)=> {
+    return {...company, postalCode : code}
+  })
+  await Company.bulkCreate(companiesWithPostalCode, {
     include: [Company.Addresses, Company.BusinessLines, Company.Languages],
   })
     .then((res) => {

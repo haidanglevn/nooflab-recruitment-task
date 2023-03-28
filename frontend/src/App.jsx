@@ -19,34 +19,12 @@ function App() {
   const fetchAPIdata = async () => {
     console.log("Fetching API data");
 
-    for (const code of capitalRegionPostalCode) {
-      await axios
-        .get(
-          `http://avoindata.prh.fi/bis/v1?totalResults=true&maxResults=1&resultsFrom=0&streetAddressPostCode=${code}&companyRegistrationFrom=2014-02-28`
-        )
-        .then((res) => {
-          console.log(`Result for postal code: ${code}`);
-          const results = res.data.results;
-          console.log(
-            "Sending data to local mysql database: ",
-            results
-          );
-          results.map((company)=> {
-            console.log(company)
-          })
-          console.log("---------------------------------");
-        });
-    }
+    await axios.get("http://localhost:4000/fetchCompanies");
+
+    
   };
 
-  const testPostData = () => {
-    const testData = {
-      name: "Knowway oy",
-      businessId: "3353271-6",
-      registrationDate: "2023-03-21",
-      companyForm: "OY",
-      detailsUri: "http://avoindata.prh.fi/opendata/bis/v1/3353271-6",
-    };
+  /*   const testPostData = () => {
     axios
       .post("http://localhost:4000/addCompany", testData)
       .then((response) => {
@@ -55,7 +33,7 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }; */
 
   const getAll = async () => {
     await axios
@@ -73,9 +51,7 @@ function App() {
         console.log("Sync data done");
       })
       .catch((error) => console.log(error));
-  }
-
-  
+  };
 
   return (
     <div className="App">
@@ -90,9 +66,9 @@ function App() {
           return <p>{business.name}</p>;
         })}
       </div>
-      <div>
+      {/*     <div>
         <button onClick={testPostData}>Test post data</button>
-      </div>
+      </div> */}
       <div>
         <button onClick={getAll}>Get data from Mysql DB</button>
       </div>

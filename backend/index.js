@@ -1,6 +1,7 @@
 "use strict";
 const express = require("express");
 const host = "localhost";
+const axios = require('axios')
 const port = 4000;
 
 const cors = require("cors");
@@ -178,78 +179,48 @@ app.get("/getAll", async (req, res) => {
   }
 });
 
-// Post company to db 
-const testCompany = {
-  businessId: "3353000-8",
-  name: "T.Tallberg Oy",
-  registrationDate: "2023-03-20",
-  companyForm: "OY",
-  detailsUri: null,
-  addresses: [
-    {
-      street: "Saukonpaadenranta 20 A 18",
-      postCode: "00180",
-      city: "HELSINKI",
-      registrationDate: "2023-03-20",
-      language: "FI",
-    },
-    {
-      street: "Saukonpaadenranta 20 A 18",
-      postCode: "00180",
-      city: "HELSINKI",
-      registrationDate: "2023-03-20",
-      language: "FI",
-    },
-  ],
+app.get("/fetchCompanies", async (req, res) => {
+  const capitalRegionPostalCode = [
+    "02100",
+    "00140",
+    "00930",
+    "00710",
+    "01730",
+    "00500",
+    "01760",
+    "01690",
+    "00510",
+    "00180",
+  ];
 
-  businessLines: [
-    {
-      code: "85510",
-      name: "Sports and recreation education",
-      registrationDate: "2023-03-20",
-      language: "EN",
-    },
-    {
-      code: "85510",
-      name: "Urheilu- ja liikuntakoulutus",
-      registrationDate: "2023-03-20",
-      language: "FI",
-    },
-    {
-      code: "85510",
-      name: "Sport- och motionsutbildning",
-      registrationDate: "2023-03-20",
-      language: "SE",
-    },
-  ],
-  languages: [
-    {
-      name: "Finnish",
-      registrationDate: "2023-03-22",
-    },
-    {
-      name: "Suomi",
-      registrationDate: "2023-03-22",
-    },
-    {
-      name: "Finska",
-      registrationDate: "2023-03-22",
-    },
-  ],
-};
+  for (const code of capitalRegionPostalCode) {
+    const companyData = await axios
+      .get(
+        `http://avoindata.prh.fi/bis/v1?totalResults=true&maxResults=20&resultsFrom=0&streetAddressPostCode=${code}&companyRegistrationFrom=2014-02-28`
+      )
+      .then((res) => {
+        console.log(`Result for postal code: ${code}`);
+        const results = res.data.results;
+        console.log("---------------------------------");
+        return results;
+      })
+    await addCompanies(companyData)
+  }
+  res.end();
+});
 
-// Add new company
-app.post("/addCompany", (req, res) => {
-  console.log(req.body);
-  Company.create(testCompany, {
-    include: [ Company.Addresses, Company.BusinessLines, Company.Languages],
+// function to add companies
+const addCompanies = async (companies) => {
+  console.log("Companies :", companies)
+  await Company.bulkCreate(companies, {
+    include: [Company.Addresses, Company.BusinessLines, Company.Languages],
   })
     .then((res) => {
-      console.log("Created successfully a new record: ", testCompany);
+      console.log("Created successfully a new record: ", companies);
     })
     .catch((error) => {
       console.error("Failed to create a new record : ", error);
     });
-});
+};
 
 app.listen(port, host, () => console.log(`${host}:${port} is running....`));

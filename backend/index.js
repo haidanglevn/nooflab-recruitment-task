@@ -3,7 +3,8 @@ const express = require("express");
 const host = "localhost";
 const axios = require('axios')
 const port = 4000;
-
+const dotenv = require('dotenv')
+dotenv.config()
 const cors = require("cors");
 
 const app = express();
@@ -13,10 +14,15 @@ app.use(express.json());
 const { Sequelize, DataTypes, Model } = require("sequelize");
 
 // Set Up connection to Mysql Database
-const sequelize = new Sequelize("companyDB", "root", "password", {
-  host: "127.0.0.1",
-  dialect: "mysql",
-});
+const sequelize = new Sequelize(
+  process.env.DATABASE,
+  process.env.USERNAME,
+  process.env.PASSWORD,
+  {
+    host: process.env.HOST,
+    dialect: "mysql",
+  }
+);
 
 // Test the connection
 sequelize

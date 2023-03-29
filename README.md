@@ -1,7 +1,6 @@
-# Project title
+# PRH API Client
 
-A short description of this project. 
-What it is about, who are target group and why that project was made. 
+This API client fetches data of companies provided by PRH Open Data API, then stored in local MySQL server and display as table or in JSON format. 
 
 # Technologies used
 
@@ -92,7 +91,8 @@ Server index.js will run in localhost:4000 by default, while the React app run o
 ## Use the React App in the browser
 To use the app, go to browser and type 'localhost:3000' in the address bar. You should see the app if all the steps above is done correctly.
 
-image
+image<img width="1435" alt="Screenshot 2023-03-29 at 14 48 08" src="https://user-images.githubusercontent.com/24937536/228526244-f4012491-d542-4149-96dc-ac2080d4b13e.png">
+
 
 At Step 1, press the "fetch API data" button. The data from 10 capital postal codes is fetched from the RHP API from this endpoint: 
 
@@ -103,14 +103,17 @@ GET `http://avoindata.prh.fi/bis/v1?totalResults=true&maxResults=20&resultsFrom=
 This process is run by the server, then the data is stored into your local MySQL database.
 Wait until the output field show "Companies data is ready and stored in database! Step 2 is ready."
 
-image
+<img width="1414" alt="Screenshot 2023-03-29 at 11 59 59" src="https://user-images.githubusercontent.com/24937536/228525979-c196d14d-7290-4dd1-a3a4-62ab6c2ed964.png">
+
 
 Then at Step 2: you can either click Get All, or select a postal code and click Get data button to show the data from your local database. Data will be in both table (with some columns removed for better viewing) and in JSON format. You can go to the URI ("detailsUri" from the object) of the specific company to get more data.
 
 ```js
 {"businessId":"3286351-3","name":"TH Pääsykoevalmennukset Oy","registrationDate":"2022-05-10","companyForm":"OY","detailsUri":"http://avoindata.prh.fi/opendata/bis/v1/3286351-3","postalCode":"02100","createdAt":"2023-03-29T08:44:22.000Z","updatedAt":"2023-03-29T08:44:22.000Z"}
 ```
+<img width="1411" alt="Screenshot 2023-03-29 at 12 00 13" src="https://user-images.githubusercontent.com/24937536/228526435-4fb107e3-28fe-4cf7-acc6-a92c6f8b94d7.png">
 
+<img width="1411" alt="Screenshot 2023-03-29 at 12 00 24" src="https://user-images.githubusercontent.com/24937536/228526454-18eeb19c-d2d8-43ae-a010-55de73097f43.png">
 
 ## Sources 
 

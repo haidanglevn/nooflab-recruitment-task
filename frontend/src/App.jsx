@@ -57,10 +57,10 @@ function App() {
 
   return (
     <div className="App">
-      <h1>PHR API Client</h1>
+      <h1>PRH API Client</h1>
       <main>
         <div className="step1">
-          <h2>Step 1: Fetch companies data from the PHR API </h2>
+          <h2>Step 1: Fetch companies data from the PRH API </h2>
           <p>Press the below button to
             fetch data for postal codes: 02100, 00140, 00930, 00710, 01730, 00500,
             01760, 01690, 00510, 00180
@@ -97,7 +97,7 @@ function App() {
           {getPostalCode == undefined ? (
             <p>GET /postal_codes/[CODE]/companies</p>
           ) : (
-            <p>{`/postal_codes/${getPostalCode}/companies`}</p>
+            <p>GET {`/postal_codes/${getPostalCode}/companies`}</p>
           )}
           <h2>Output in table: </h2>
           <div>

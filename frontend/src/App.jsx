@@ -94,7 +94,7 @@ function App() {
           <p></p>
           <button onClick={getOne}>Get data</button>
           <h2>GET request: </h2>
-          {getPostalCode == undefined ? (
+          {getPostalCode === undefined ? (
             <p>GET /postal_codes/[CODE]/companies</p>
           ) : (
             <p>GET {`/postal_codes/${getPostalCode}/companies`}</p>

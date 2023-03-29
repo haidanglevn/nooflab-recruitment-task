@@ -11,9 +11,6 @@ function App() {
   useEffect(() => {
     axios
       .get("http://localhost:4000/")
-      .then((res) => {
-        console.log("Sync data done");
-      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -31,10 +28,7 @@ function App() {
   ];
 
   const fetchAPIdata = async () => {
-    console.log("Fetching API data");
-
     await axios.get("http://localhost:4000/fetchCompanies").then((res) => {
-      console.log("Response from server: ", res);
       setResponse(
         "Companies data is ready and stored in database! Step 2 is ready. "
       );
@@ -45,7 +39,6 @@ function App() {
     await axios
       .get("http://localhost:4000/getAll")
       .then((res) => {
-        console.log(res.data);
         setBusinessData(res.data);
       })
       .catch((error) => console.log(error));
@@ -59,9 +52,7 @@ function App() {
           setBusinessData(res.data);
         })
         .catch((err) => console.log(err));
-    } else {
-      console.log("Choose a postal code");
-    }
+    } 
   };
 
   return (
@@ -69,10 +60,9 @@ function App() {
       <h1>PHR API Client</h1>
       <main>
         <div className="step1">
-          <h2>Step 1: </h2>
-          <p>Press the below button to fetch companies data from the API:</p>
-          <p>
-            Fetching postal codes: 02100, 00140, 00930, 00710, 01730, 00500,
+          <h2>Step 1: Fetch companies data from the PHR API </h2>
+          <p>Press the below button to
+            fetch data for postal codes: 02100, 00140, 00930, 00710, 01730, 00500,
             01760, 01690, 00510, 00180
           </p>
           <button onClick={fetchAPIdata}>Fetch API data</button>
@@ -81,7 +71,7 @@ function App() {
         </div>
 
         <div className="step2">
-          <h2>Step 2: </h2>
+          <h2>Step 2: Read data from local MySQL database</h2>
           <p>Get all data from Mysql DB</p>
           <button onClick={getAll}>Get All</button>
           <h2>OR</h2>

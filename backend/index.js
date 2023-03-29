@@ -190,7 +190,6 @@ app.get("/getAll", async (req, res) => {
 });
 
 app.get("/postal_codes/:code/companies", async(req,res)=> {
-  console.log(req.params.code);
   const result = await Company.findAll({
     where: {
       postalCode: req.params.code
@@ -219,9 +218,7 @@ app.get("/fetchCompanies", async (req, res) => {
         `http://avoindata.prh.fi/bis/v1?totalResults=true&maxResults=20&resultsFrom=0&streetAddressPostCode=${code}&companyRegistrationFrom=2014-02-28`
       )
       .then((res) => {
-        console.log(`Result for postal code: ${code}`);
         const results = res.data.results;
-        console.log("---------------------------------");
         return results;
       })
     await addCompanies(companyData, code)
@@ -231,7 +228,6 @@ app.get("/fetchCompanies", async (req, res) => {
 
 // function to add companies
 const addCompanies = async (companies, code) => {
-  console.log("Companies :", companies)
   const companiesWithPostalCode = companies.map((company)=> {
     return {...company, postalCode : code}
   })
@@ -239,7 +235,7 @@ const addCompanies = async (companies, code) => {
     include: [Company.Addresses, Company.BusinessLines, Company.Languages],
   })
     .then((res) => {
-      console.log("Created successfully a new record: ", companies);
+      console.log("Created successfully a new record: ");
     })
     .catch((error) => {
       console.error("Failed to create a new record : ", error);
